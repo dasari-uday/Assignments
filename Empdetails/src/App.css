@@ -1,0 +1,45 @@
+.main{
+  margin-top: 4%;
+}
+h1{
+  text-align: center;
+}
+th{
+  background-color:aliceblue;
+}
+
+button{
+
+  position: relative;
+  float:right
+}
+/* App.css */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+table, th, td {
+
+  border: 1px solid black;
+}
+
+
+tr:nth-child(odd) {
+  background-color:gray;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+#AddEmp{
+  background-color: rgb(219, 241, 219);
+
+}
+#delete{
+  background-color: rgb(250, 85, 85);
+}
+#update{
+  background-color: rgb(164, 248, 37);
+}
