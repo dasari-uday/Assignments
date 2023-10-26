@@ -1,0 +1,156 @@
+
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./main_files/___vscode_livepreview_injected_script"></script>
+    <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width,  
+                   initial-scale=1.0">
+    <title>
+    </title>
+</head>
+
+<body>
+
+    <div class="top">
+        <div class="top1">
+            <img src="./main_files/food.png" width="50px" height="50px">
+        </div>
+        <div class="top2"><b>Restaruent</b></div>
+        <div class="top-right">
+            <div class="top3">
+                <b>Home</b>
+            </div>
+            <div class="top4">
+                <b>Categories</b>
+            </div>
+            <div class="top5">
+                <b>cart</b>
+            </div>
+            <div class="top6">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+
+        </div>
+    </div>
+    <div class="content">
+        <div class="list1">
+            <br> <br>
+
+            <a>Backery</a>
+            <br>
+            <br>
+            <a>Produce</a>
+            <br>
+            <br>
+            <a>Meat</a>
+            <br> <br>
+            <a>Dairy</a>
+            <br> <br>
+            <a>snacks</a>
+        </div>
+
+
+        <div style="overflow: hidden;">
+
+            <div class="list2">
+                <h1 class="cen"> Recipes</h1>
+                <p clas>Discover New recipe Idea</p>
+                <button id="showPopup">view More</button>
+                <div class="menu">
+                       <div class="img1"><img src="./main_files/pastha.jpg"width="100%"> </div>
+                       <div class="img1c"><h4>Quick and Easy paste</h4>
+                        <small>Try it out</small>
+                        <p>Try out delicious pastha recipie for a quick and weekly dinner</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <div class="img1"><img src="./main_files/pastha.jpg"width="100%"> </div>
+                    <div class="img1c"><h4>Quick and Easy paste</h4>
+                     <small>Try it out</small>
+                     <p>Try out delicious pastha recipie for a quick and weekly dinner</p>
+                 </div>
+             </div>
+
+            </div>
+            <div class="details">
+                <h1>LoggedIN user Details</h1>
+                <img src="./main_files/login_icon.jpg" width="20%" height="20%" style="margin-left: 40%;">
+
+
+                <div id="sub">
+                    
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="bottom">
+            <h4 style="font-size: 100%;">Subscribe To our Restaruent</h4>
+            <h6>Get updates on the latest offers and pramotions</h6>
+           <ul >
+            
+                FirstName<br>
+                <input type="text" placeholder="Enter your name">
+                <br><br>
+                LastName<br>
+                <input type="text" placeholder="Enter your last Name">
+                <br><br>
+                Email<br>
+                <input type="text" placeholder="Enter your mail"><br>
+                <br>
+                <button>Subscriber</button>
+                
+           </ul>
+
+        </div>
+    </div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close" id="closePopup">&times;</span>
+            <div class="menu">
+                <div class="img1"><img src="./main_files/pastha.jpg"width="100%"> </div>
+                <div class="img1c"><h4>Quick and Easy paste</h4>
+                 <small>Try it out</small>
+                 <p>Try out delicious pastha recipie for a quick and weekly dinner</p>
+             </div>
+         </div>
+         <div class="menu">
+             <div class="img1"><img src="./main_files/pastha.jpg"width="100%"> </div>
+             <div class="img1c"><h4>Quick and Easy paste</h4>
+              <small>Try it out</small>
+              <p>Try out delicious pastha recipie for a quick and weekly dinner</p>
+          </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("showPopup").addEventListener("click", function() {
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("popup-overlay").style.display = "block";
+});
+
+document.getElementById("closePopup").addEventListener("click", function() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("popup-overlay").style.display = "none";
+});
+
+
+const firstName = sessionStorage.getItem("name");
+     const lastName = sessionStorage.getItem("lastname");
+      const email = sessionStorage.getItem("email");
+      const password = sessionStorage.getItem("password");
+      document.getElementById("sub").innerHTML=`
+         
+           <p>First Name: ${firstName}</p>
+           <p>Last Name: ${lastName}</p>
+           <p>Email: ${email}</p>
+           <p> password: ${password}</p>`
+    </script>
+    
+
+
+    
+   
+</body>
+</html>

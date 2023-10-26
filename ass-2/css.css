@@ -1,0 +1,48 @@
+.fo{
+    border: 2px solid silver;
+    width: 40%;
+    height: 25%;
+    text-align: center;
+    margin-top: 3%;
+    margin-left: 30%;
+    box-shadow: 1%;
+}
+    h1{
+        text-align: center;
+        
+    }
+    p{
+        text-align: center;
+    }
+    .email{
+        text-align: center;
+       
+        
+    }
+
+    .email1{
+        text-align: center;
+        display: none;
+        border: 2px solid silver;
+        width: 40%;
+        height: 32%;
+        text-align: center;
+        margin-top: 3%;
+        margin-left: 30%;
+        
+    }
+
+    .email2{
+        text-decoration:none;
+        text-align: center;
+        display: none;
+        
+        border: 2px solid silver;
+    width: 40%;
+    height: 25%;
+    text-align: center;
+    margin-top: 3%;
+    margin-left: 30%;
+    box-shadow: 1%;
+    }
+    
