@@ -1,0 +1,97 @@
+body{
+    background-color: antiquewhite;
+}
+.head{
+    width:90%;
+    height: 10%;
+}
+
+.head h1{
+    font-family: 'Courier New', Courier, monospace;
+    width: 99%;
+    height: 10%;
+    border: 2px solid rgb(49, 49, 49);
+   padding-left: 2%;
+    display: inline;
+    float:left;
+    text-align: center;
+  
+   
+}
+.dark{
+
+    color: white;
+    background-color: black;
+ 
+}
+.dark_mode button{
+    width: 6%;
+    position: relative;
+    margin-top:30px;
+}
+.dark_mode{
+    width: 10%;
+    height:10% ;
+    display: inline;
+    padding-top: 5%;
+    position: relative;
+    right: 1%;
+    padding-left:2%;
+    
+    
+}
+.bottom{
+    width:92%;
+    height:10%;
+    position:absolute;
+    bottom: 0;
+    left:4%;
+}
+#addbutton{position: relative;
+    top: 790px;
+    right: 30px;
+
+}
+.checkbox{
+    position:absolute;
+    
+  
+    width:40px;
+    height: 55px;
+}
+ul {
+    margin-top: 100px;
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    font-size: 18px;
+    text-align: center;
+}
+
+button {
+    background-color: #131111;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    
+}
+
+button:hover {
+    background-color: #c02f2f;
+}
+li button{
+    position: relative;
+    left:40%;
+    background-color: rgb(51, 187, 146);
+}
