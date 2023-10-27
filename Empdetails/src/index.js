@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+//import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'semantic-ui-css/semantic.min.css';
-import './components/Grammer';
-import Grammer from './components/GrammerCheck';
+
+//import './components/Grammer';
+//import Grammer from './components/GrammerCheck';
+//import GrammerCheck from './components/GrammerCheck';
+import GrammerCheckj from './components/GrammerCheck';
+//import GrammerCheck from './components/GrammerCheck';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Grammer/>
+    <GrammerCheckj/>
   </React.StrictMode>
 );
 

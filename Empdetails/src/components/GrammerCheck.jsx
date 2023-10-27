@@ -1,99 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
  
+function GrammerCheckj() {
+  const [text, setText] = useState('');
+  const [errors, setErrors] = useState([]);
+  const [apiKey] = useState('YwrMOwt9bOGdBz6j'); // Replace with your actual API key
  
+  const handleCheckText = async () => {
+    try {
+      // Make your API request to check grammar
+      const apiUrl = `https://api.textgears.com/grammar?text=${text}&language=en-US&whitelist=&dictionary_id=&ai=1&key=${apiKey}`;
  
-import './App.css';
- 
- 
- 
-function Grammer() {
- 
-  const [Text, setText] = useState('');
- 
-  let text = "";
- 
-  useEffect(() => {
- 
-    // Define a function to make the POST request
- 
-    const postData = async () => {
- 
-      try {
- 
-        const apiUrl = `https://api.textgears.com/grammar?text=${Text}&language=en-GB&whitelist=&dictionary_id=&ai=1&key=wtWYtimCaW9fGPJ5`; // Replace with your API URL
- 
-        const response = await fetch(apiUrl, {
- 
-          method: 'POST',
- 
-          headers: {
- 
-            'Content-Type': 'application/json',
- 
-          },
- 
-          body: JSON.stringify(Text),
- 
-        });
- 
- 
- 
-        if (!response.ok) {
- 
-          throw new Error(`HTTP error! Status: ${response.status}`);
- 
-        }
- 
- 
- 
-        const result = await response.json();
- 
-        console.log('Data posted successfully:', result);
- 
-      } catch (error) {
- 
-        console.error('Error posting data:', error);
- 
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(text),
+      });
+      console.log(response.data)
+     
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
  
-    };
+      const result = await response.json();
+      const responseErrors = result.response.errors || [];
+   
  
-    if (Text) {
- 
-      postData();
- 
+      setErrors(responseErrors);
+     
+    } catch (error) {
+      console.error('Error posting data:', error);
     }
+  };
  
-  }, [Text]);
+  const handleSuggestionClick = (index, suggestion) => {
+    const updatedText = text.split(' ');
+    updatedText[index] = suggestion;
+    setText(updatedText.join(' '));
+   
+  };
  
+  const renderTextWithErrors = () => {
+    const words = text.split(' ');
  
- 
-  // const handleInputChange = (e) => {
- 
-  //   const { text, index } = e.target;
- 
-  //   setText({ ...Text, [text] : index });
- 
-  // };
- 
- 
+    return (
+      <div>
+        {words.map((word, index) => {
+          const error = errors.find((error) => error.bad === word);
+          return (
+            <span key={index} className={error ? 'error' : ''}>
+              {error ? (
+                <div className="suggestion-dropdown">
+                  {error.better.map((suggestion, i) => (
+                    <div
+                      key={i}
+                      onClick={() => handleSuggestionClick(index, suggestion)}
+                    >
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {word}
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
  
   return (
- 
     <div className="App">
- 
       <h1>Enter Your Text Here To check your GRAMMAR</h1>
- 
-      <textarea style={{ width: '400px', height: '400px', display: "block" }} onChange={(e) => text = (e.target.value)} />
- 
-      <button onClick={() => setText(text) }>Check Text</button>
- 
+      <textarea
+        style={{ width: '400px', height: '100px' }}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button onClick={handleCheckText}>Check Text</button>
+      {renderTextWithErrors()}
     </div>
- 
   );
- 
 }
  
- 
- 
-export default Grammer;
+export default GrammerCheckj;
