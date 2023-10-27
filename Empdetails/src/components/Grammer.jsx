@@ -1,84 +1,114 @@
 import React, { useState } from 'react';
 
-const GrammarChecker = () => {
+function GrammerCheck() {
   const [text, setText] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
-  const [isChecking, setIsChecking] = useState(false);
+  const [apiErrors, setApiErrors] = useState([]);
+  const [apiKey] = useState('YwrMOwt9bOGdBz6j'); // Replace with your actual API key
+  const [showErrors, setShowErrors] = useState(false);
 
-  const apiKey = 'YwrMOwt9bOGdBz6j'; 
-
-  const performGrammarCheck = async () => {
-    setIsChecking(true);
-
+  const handleCheckText = async () => {
     try {
-      const apiURL = `https://api.textgears.com/correct?text=${text}&key=apiKey`;
-      const response = await fetch(apiURL);
-   
+      // Make your API request to check grammar
+      const apiUrl = `https://api.textgears.com/grammar?text=${text}&language=en-US&whitelist=&dictionary_id=&ai=1&key=${apiKey}`;
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(text),
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch');
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const result = await response.json();
-      setSuggestions(result.suggestions);
+      const responseErrors = result.response.errors || [];
 
-      if (result.errors) {
-        let correctedText = text;
-        result.errors.forEach((error) => {
-          correctedText = correctedText.replace(
-            new RegExp(error.bad, 'g'),
-            `<u>${error.bad}</u>`
-          );
-        });
-        setText(correctedText);
-      }
+      setApiErrors(responseErrors);
+      setShowErrors(true); // Show the errors after receiving the API response
     } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsChecking(false);
+      console.error('Error posting data:', error);
     }
   };
 
-  const replaceMistake = (suggestion, mistake) => {
-    const updatedText = text.replace(new RegExp(mistake, 'g'), suggestion);
-    setText(updatedText);
-    setSuggestions([]);
+  const handleSuggestionClick = (error, suggestion) => {
+    // Replace the error word with the suggestion
+    setText((prevText) => prevText.replace(error, suggestion));
+  };
+
+  const renderTextWithErrors = () => {
+    if (apiErrors.length === 0) {
+      return text; // No errors, return the original text
+    }
+
+    let textWithErrors = text;
+
+    apiErrors.forEach((error) => {
+      textWithErrors = textWithErrors.replace(
+        new RegExp(error.bad, 'g'),
+        `<span style="text-decoration: underline; color: red;">${error.bad}</span>`
+      );
+    });
+
+    return (
+      <div
+        style={{
+          width: '100%',
+          minHeight: '100px',
+          border: '1px solid #ccc',
+          padding: '5px',
+          outline: 'none',
+          whiteSpace: 'pre-wrap',
+        }}
+        dangerouslySetInnerHTML={{ __html: textWithErrors }}
+      />
+    );
   };
 
   return (
-    <div>
-      <h1>Grammar Checker</h1>
+    <div className="App">
+      <h1>Enter Your Text Here To check your GRAMMAR</h1>
       <textarea
-        rows="4"
-        cols="100"
+        style={{ width: '400px', minHeight: '100px' }}
         value={text}
-        spellCheck={false}
         onChange={(e) => setText(e.target.value)}
       />
-      <button onClick={performGrammarCheck} disabled={isChecking}>
-        Check Grammar
-      </button>
-      <div>
-        {suggestions && suggestions.length > 0 ? (
-          <div>
-            <h2>Suggestions:</h2>
-            <ul>
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  onClick={() => replaceMistake(suggestion.s, suggestion.bad)}
-                >
-                  {suggestion.s}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <p>No grammar mistakes found!</p>
-        )}
-      </div>
+      <button onClick={handleCheckText}>Check Text</button>
+      {showErrors && (
+        <div
+          style={{
+            width: '400px',
+            minHeight: '100px',
+            border: '1px solid #ccc',
+            padding: '5px',
+            outline: 'none',
+          }}
+        >
+          {renderTextWithErrors()}
+        </div>
+      )}
+      {showErrors && (
+        <div>
+          {apiErrors.map((error, index) => (
+            <div key={index} className="error-suggestion">
+              <span onClick={() => handleSuggestionClick(error.bad, error.better[0])}>
+                {error.bad}
+              </span>
+              <select>
+                {error.better.map((suggestion, suggestionIndex) => (
+                  <option key={suggestionIndex} value={suggestion}>
+                    {suggestion}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default GrammarChecker;
+export default GrammerCheck;
