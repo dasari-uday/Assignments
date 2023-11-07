@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #registrationform {
+            width: 80%;
+            max-width: 400px; 
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form > label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        form > input,
+        form > select,
+        form > textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form > progress {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        form > input[type="file"] {
+            margin-top: 10px;
+        }
+
+        button[type="button"] {
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="" method="POST" id="registrationform">
+        <h1>Register</h1>
+      
+        <label for="job">Job Title:</label>
+        <select name="job" id="job" required>
+          <optgroup label="Web">
+            <option value="front_end_developer">Frontend Developer</option>
+            <option value="back_end_developer">Backend Developer</option>
+            <option value="fullstack_developer">Fullstack Developer</option>
+            <option value="datascience analyst">Data Analyst</option>
+          </optgroup>
+      </select>
+     
+        <label for="jobtype">Job type:</label>
+        <select name="jobtype" id="jobtype" required>
+          <optgroup label="Web">
+            <option value="Intern">Intern</option>
+            <option value="full time">Full Time</option>
+            <option value="part time">Part Time</option>
+            <option value="contract">Contract</option>
+            </optgroup>
+          </select>
+     
+      
+        <label class="" for="bio">Bio:</label>
+       
+          <textarea name="bio" id="bio" required></textarea>
+    
+
+          <label for="joblocation">Job location:</label>
+          <input type="text" name="job location" value="" id="joblocation" required/>
+     
+         <label for="ExperienceLevel">ExperienceLevel:</label>
+         <select name="ExperienceLevel" id="ExperienceLevel" required>
+           <optgroup label="ExperienceLevel">
+             <option value="EntryLevel">Entry Level</option>
+             <option value="middlelevel">Middle Level</option>
+             <option value="SeniorLevel">Senior Level</option>
+           </optgroup>
+           
+         </select>
+       
+         <label for="EducationLevel">EducationLevel:</label>
+         <select name="EducationLevel" id="EducationLevel" required>
+           <optgroup label="EducationLevel">
+             <option value="HighSchool">HighSchool</option>
+             <option value="AssociateDegree">AssociateDegree</option>
+             <option value="BacholareDegree">BacholareDegree</option>
+             <option value="DoctrateDegree">Doctrate Degree</option>
+           </optgroup>
+           
+         </select>
+    
+          <label class="" for="name">Name:</label>
+          <input type="text" name="name" value="" id="name" required />
+      
+    
+          <label class="" for="email">Email:</label>
+          <input type="email" name="email" value="" id="email" required />
+         
+          <label for="password">password:</label>
+          <input type="password" name="password" value="" id="password" required />
+          <label>Interest:</label>
+    
+          <select id="interest" required>
+            <option value="development">Development</option>
+            <option value="design">Design</option>
+            <option value="business">Business</option>
+          </select>
+          <progress value="0" max="100" id="uploader">0%</progress>
+        <input type="file" value="upload" accept=".pdf" id="fileButton" required>
+        
+          <button type="submit" sendMessage()>Register</button>
+      </form>
+    
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    
+        const firebaseConfig = {
+    apiKey: "AIzaSyAlWdZDwJIS-7RqleGnEpR1XP6pMiyGga8",
+    authDomain: "virtual-ats-4dd87.firebaseapp.com",
+    databaseURL: "https://virtual-ats-4dd87-default-rtdb.firebaseio.com",
+    projectId: "virtual-ats-4dd87",
+    storageBucket: "virtual-ats-4dd87.appspot.com",
+    messagingSenderId: "1018264401112",
+    appId: "1:1018264401112:web:a8afa500da3cb5b40253ad",
+    measurementId: "G-XR6N8R5GX8"
+    };
+    
+          // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    
+    
+    
+        //listen for submit event//(1)
+        document
+          .getElementById('registrationform')
+          .addEventListener('submit', formSubmit);
+    
+        //Submit form(2)
+        function formSubmit(e) {
+          e.preventDefault();
+          // Get Values from the DOM
+          let job = document.querySelector('#job').value;
+          let name = document.querySelector('#name').value;
+          let email = document.querySelector('#email').value;
+          let password = document.querySelector('#password').value;
+          let bio = document.querySelector('#bio').value;
+          let interest = document.querySelector('#interest').value;
+          let EducationLevel = document.querySelector('#EducationLevel').value;
+          let jobtype = document.querySelector('#jobtype').value;
+          let joblocation = document.querySelector('#joblocation').value;
+          let ExperienceLevel = document.querySelector('#ExperienceLevel').value;
+    
+    
+          //send message values(3)
+          sendMessage(name, email, password, bio, job, interest,joblocation,EducationLevel,ExperienceLevel,jobtype);
+        }
+    
+        //Send Message to Firebase(4)
+        function sendMessage(name, email, password, bio, job, interest,joblocation,EducationLevel,ExperienceLevel,jobtype) {
+          const database = getDatabase();
+    
+          set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
+            name: name,
+            email: email,
+            password: password,
+            bio: bio,
+            job: job,
+            Interest: interest,
+            EducationLevel:EducationLevel,
+            ExperienceLevel:ExperienceLevel,
+            jobtype: jobtype,
+            joblocation:joblocation
+          }).then(() => {
+              //Show Alert Message(5)
+           document.querySelector('.alert').style.display = 'block';
+            //Hide Alert Message After Seven Seconds(6)
+           setTimeout(function () {
+           document.querySelector('.alert').style.display = 'none';
+           }, 7000);
+           document.getElementById('registrationform').reset();
+          }).catch((error) => {
+            alert(error)
+          })
+        }
+    
+    
+        
+      </script>
+      <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+      <script>
+    
+            //BE SURE TO PROTECT EVERYTHING IN THE CONFIG
+            //DON'T COMMIT IT!!!
+    
+            // Initialize Firebase
+            const Config = {
+      apiKey: "AIzaSyAlWdZDwJIS-7RqleGnEpR1XP6pMiyGga8",
+      authDomain: "virtual-ats-4dd87.firebaseapp.com",
+      databaseURL: "https://virtual-ats-4dd87-default-rtdb.firebaseio.com",
+      projectId: "virtual-ats-4dd87",
+      storageBucket: "virtual-ats-4dd87.appspot.com",
+      messagingSenderId: "1018264401112",
+      appId: "1:1018264401112:web:a8afa500da3cb5b40253ad",
+      measurementId: "G-XR6N8R5GX8"
+    };
+            firebase.initializeApp(Config);
+        </script>
+      <script type="text/javascript">
+    
+            // firebase bucket name
+            // REPLACE WITH THE ONE YOU CREATE
+            // ALSO CHECK STORAGE RULES IN FIREBASE CONSOLE
+            var fbBucketName = 'images';
+    
+            // get elements
+            var uploader = document.getElementById('uploader');
+            var fileButton = document.getElementById('fileButton');
+    
+            // listen for file selection
+            fileButton.addEventListener('change', function (e) {
+    
+                // what happened
+                console.log('file upload event', e);
+    
+                // get file
+                var file = e.target.files[0];
+    
+                // create a storage ref
+                var storageRef = firebase.storage().ref(`${fbBucketName}/${file.name}`);
+    
+                // upload file
+                var uploadTask = storageRef.put(file);
+    
+                // The part below is largely copy-pasted from the 'Full Example' section from
+                // https://firebase.google.com/docs/storage/web/upload-files
+    
+                // update progress bar
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                    function (snapshot) {
+                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        uploader.value = progress;
+                        console.log('Upload is ' + progress + '% done');
+                        switch (snapshot.state) {
+                            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                console.log('Upload is paused');
+                                break;
+                            case firebase.storage.TaskState.RUNNING: // or 'running'
+                                console.log('Upload is running');
+                                break;
+                        }
+                    }, function (error) {
+    
+                        // A full list of error codes is available at
+                        // https://firebase.google.com/docs/storage/web/handle-errors
+                        switch (error.code) {
+                            case 'storage/unauthorized':
+                                // User doesn't have permission to access the object
+                                break;
+    
+                            case 'storage/canceled':
+                                // User canceled the upload
+                                break;
+    
+                            case 'storage/unknown':
+                                // Unknown error occurred, inspect error.serverResponse
+                                break;
+                        }
+                    }, function () {
+                        // Upload completed successfully, now we can get the download URL
+                        // save this link somewhere, e.g. put it in an input field
+                        var downloadURL = uploadTask.snapshot.downloadURL;
+                        console.log('downloadURL', downloadURL);
+                    });
+    
+            });
+    
+    
+        </script>
+</body>
+</html>
